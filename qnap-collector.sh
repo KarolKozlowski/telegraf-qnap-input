@@ -28,13 +28,15 @@ sysfields=""
 systmp=$(getsysinfo systmp | cut -d "/" -f1 | cut -d " " -f1) # get system temperature
 systmp_unit=$(getsysinfo systmp | cut -d "/" -f1 | cut -d " " -f2) # get system temperature
 
+system_version=$(getcfg system version)
+
 sysfannum=$(getsysinfo sysfannum) # get total system fan number
 for fan_no in  $(seq 1 ${sysfannum}); do
   sysfan=$(getsysinfo sysfan ${fan_no} | cut -d " " -f1 ) # get system fan speed
   sysfields="${sysfields}fan_${fan_no}=${sysfan},"
 done
 
-echo "sys ${sysfields}tmp=${systmp},tmp_unit=\"${systmp_unit}\" ${timestamp}"
+echo "sys ${sysfields}tmp=${systmp},tmp_unit=\"${systmp_unit}\",version=\"${system_version}\" ${timestamp}"
 
 
 hdnum=$(getsysinfo hdnum) # get total system SATA disk number
