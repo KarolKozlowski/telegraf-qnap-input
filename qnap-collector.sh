@@ -18,7 +18,15 @@ timestamp=$(date +%s%N)
 
 cputmp=$(getsysinfo cputmp | cut -d "/" -f1 | cut -d " " -f1) # get CPU temperature
 cputmp_unit=$(getsysinfo cputmp | cut -d "/" -f1 | cut -d " " -f2) # get CPU temperature unit
-echo "cpu tmp=${cputmp},tmp_unit=\"${cputmp_unit}\" ${timestamp}"
+
+cpufan=$(hal_app --se_sys_get_fan enc_sys_id=qm2_1_11.32,obj_index=0 | cut -d',' -f 3 | awk '{print $3}')
+
+if [ -e '/opt/bin/ps' ]; then
+    highest_cpu_process=$(/opt/bin/ps aux --sort -pcpu --no-headers | head -n 1 | awk '{print $11}')
+    echo "cpu tmp=${cputmp},tmp_unit=\"${cputmp_unit}\",cpufan=${cpufan},proc=\"${highest_cpu_process}\" ${timestamp}"
+else
+    echo "cpu tmp=${cputmp},tmp_unit=\"${cputmp_unit}\",cpufan=${cpufan} ${timestamp}"
+fi
 
 model=$(getsysinfo model) # get system model name
 echo "model name=\"${model}\" ${timestamp}"
@@ -37,7 +45,6 @@ for (( fan_no=0; fan_no<${sysfannum}; fan_no++ ));  do
 done
 
 echo "sys ${sysfields}tmp=${systmp},tmp_unit=\"${systmp_unit}\",version=\"${system_version}\" ${timestamp}"
-
 
 hdnum=$(getsysinfo hdnum) # get total system SATA disk number
 for (( disk_no=1; disk_no<=${hdnum}; disk_no++ ));  do
@@ -70,5 +77,6 @@ for (( volume_no=0; volume_no<${sysvolnum}; volume_no++ ));  do
 
   echo "volume_${volume_no} description=\"${vol_desc}\",fs=\"${vol_fs}\",total_size=${vol_totalsize},total_size_unit=\"${total_size_unit}\",free_size=${vol_freesize},free_size_unit=\"${vol_freesize_unit}\",status=\"${vol_status}\" ${timestamp}"
 done
+
 
 echo "${timestamp}" > /tmp/qnap-collector.timestamp
