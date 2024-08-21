@@ -39,7 +39,7 @@ systmp_unit=$(getsysinfo systmp | cut -d "/" -f1 | cut -d " " -f2) # get system 
 system_version=$(getcfg system version)
 
 sysfannum=$(getsysinfo sysfannum) # get total system fan number
-for (( fan_no=0; fan_no<${sysfannum}; fan_no++ ));  do
+for (( fan_no=1; fan_no<=${sysfannum}; fan_no++ ));  do
   sysfan=$(getsysinfo sysfan ${fan_no} | cut -d " " -f1 ) # get system fan speed
   sysfields="${sysfields}fan_${fan_no}=${sysfan},"
 done
