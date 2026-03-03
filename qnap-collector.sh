@@ -78,5 +78,19 @@ for (( volume_no=0; volume_no<${sysvolnum}; volume_no++ ));  do
   echo "volume_${volume_no} description=\"${vol_desc}\",fs=\"${vol_fs}\",total_size=${vol_totalsize},total_size_unit=\"${total_size_unit}\",free_size=${vol_freesize},free_size_unit=\"${vol_freesize_unit}\",status=\"${vol_status}\" ${timestamp}"
 done
 
+echo "qnap_memory,host=TVS-h674,type=process_rss_mb value=$(ps -e -o rss= | awk '{s+=$1} END {printf "%.0f", s*1024}')"
+### --- ZFS ---
+
+STATS_DIR="/proc/sys/kstat/zfs/misc/arcstats"
+
+echo "zfs_arc,host=$(hostname) \
+size=$(cat $STATS_DIR/size),\
+c_max=$(cat $STATS_DIR/c_max),\
+c_min=$(cat $STATS_DIR/c_min),\
+hits=$(cat $STATS_DIR/hits),\
+misses=$(cat $STATS_DIR/misses),\
+mfu_hits=$(cat $STATS_DIR/mfu_hits),\
+mru_hits=$(cat $STATS_DIR/mru_hits)"
+
 
 echo "${timestamp}" > /tmp/qnap-collector.timestamp
