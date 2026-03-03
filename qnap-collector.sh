@@ -94,3 +94,7 @@ mru_hits=$(cat $STATS_DIR/mru_hits)"
 
 
 echo "${timestamp}" > /tmp/qnap-collector.timestamp
+
+# monior execution with uptime kuma
+curl -sS "https://kuma.dotnot.pl/api/push/6zOz1Mj1Vj?status=up&msg=OK&ping=">/dev/null
+
