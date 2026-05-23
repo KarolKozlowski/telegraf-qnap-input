@@ -1,0 +1,3 @@
+#!/bin/sh
+export LD_LIBRARY_PATH=/share/ZFS530_DATA/.qpkg/NVIDIA_GPU_DRV/usr/nvidia
+exec /share/ZFS530_DATA/.qpkg/NVIDIA_GPU_DRV/usr/bin/nvidia-smi "$@"
