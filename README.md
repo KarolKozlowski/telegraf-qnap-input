@@ -29,6 +29,7 @@ Small helper repo for recovering and maintaining Telegraf custom monitoring on Q
 
 - `inputs.zfs` is intentionally not included due to QNAP-specific implementation differences.
 - SMART plugin uses `path = "/opt/sbin/smartctl"`.
+- Some Telegraf builds do not support newer SMART options (e.g., `nocheck`); `telegraf-qnap-smart-net.conf` is kept to broadly compatible fields.
 - `inputs.filecount` is intentionally not included to avoid recursive directory scans and storage/IO overhead.
 - Local `*.out` artifacts (e.g., collector/query outputs, `ip-a.out`) are intentionally gitignored and not part of tracked repository layout.
 
