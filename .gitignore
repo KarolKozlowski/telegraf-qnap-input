@@ -1,1 +1,7 @@
+# Ignore executable output files
 *.out
+
+# Editor/backup temp files
+*~
+*.swp
+*.swo
